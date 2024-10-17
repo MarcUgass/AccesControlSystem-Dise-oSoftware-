@@ -6,11 +6,14 @@ import org.json.JSONObject;
 
 public class Door {
   private final String id;
-  private boolean closed; // physically
+  private boolean closed;
+  //boolean locked;
+  private DoorState state; // Estado actual de la puerta lock/unlock
 
   public Door(String id) {
     this.id = id;
     closed = true;
+    this.state = new Unlocked(this); // Estado inicial
   }
 
   public void processRequest(RequestReader request) {
@@ -28,32 +31,22 @@ public class Door {
   private void doAction(String action) {
     switch (action) {
       case Actions.OPEN:
-        if (closed) {
-          closed = false;
-        } else {
-          System.out.println("Can't open door " + id + " because it's already open");
-        }
+        state.open();
         break;
       case Actions.CLOSE:
-        if (closed) {
-          System.out.println("Can't close door " + id + " because it's already closed");
-        } else {
-          closed = true;
-        }
+        state.close();
         break;
       case Actions.LOCK:
-        // TODO
-        // fall through
+        state.lock();
+        break;
       case Actions.UNLOCK:
-        // TODO
-        // fall through
+        state.unlock();
+        break;
       case Actions.UNLOCK_SHORTLY:
-        // TODO
-        System.out.println("Action " + action + " not implemented yet");
+        state.unlock_shortly();
         break;
       default:
-        assert false : "Unknown action " + action;
-        System.exit(-1);
+        System.out.println("Action " + action + " not implemented.");
     }
   }
 
@@ -61,13 +54,22 @@ public class Door {
     return closed;
   }
 
+  public void setClosed(boolean closed) {
+    this.closed = closed;
+  }
+
+  public void setState(DoorState state) {
+    this.state = state;
+  }
+
+  public String getStateName() {
+    return state.getStateName();
+  }
+
   public String getId() {
     return id;
   }
 
-  public String getStateName() {
-    return "unlocked";
-  }
 
   @Override
   public String toString() {
