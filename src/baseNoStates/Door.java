@@ -9,11 +9,16 @@ public class Door {
   private boolean closed;
   //boolean locked;
   private DoorState state; // Estado actual de la puerta lock/unlock
+  private Space fromSpace;  // mirar d'on ve la porta
+  private Space toSpace;  // mirar a ón va la porta
 
-  public Door(String id) {
+  public Door(String id, Space fromSpace, Space toSpace) {
     this.id = id;
     closed = true;
     this.state = new Unlocked(this); // Estado inicial
+    this.fromSpace = fromSpace;
+    this.toSpace = toSpace;
+
   }
 
   public void processRequest(RequestReader request) {

@@ -32,7 +32,28 @@ class DirectoryDoors {
 + {static} getAllDoors() : Door[]
 }
 
-DirectoryDoors --> "*" Door : "allDoors"
+class DirectoryAreas {
+- {static} allAreas : Area[]
+- {static} allDoors : Door[]
+- root : Area
++ {static} makeAreas()
++ {static} findAreaById(id : String
++ {static} getAllDoors() : Door[]
+}
+
+DirectoryAreas --> "*" Door : "allDoors"
+
+class Area {
+- id : String
+- doors: Door[]
++ Area(id : String)
++ addDoor(door : Door)
++ getSpace() : String
++ getDoorsGivingAccess() : Door[]
++ toJson() : JSONObject
+}
+
+DirectoryAreas --> "*" Area : "allAreas"
 
 class DirectoryUsers {
 - {static} users : User[]
@@ -56,6 +77,22 @@ class Door {
 - doAction(action : String)
 }
 
+class DoorState {
+- door : Door
++ DoorState(door : Door)
++ open()
++ close()
++ lock()
++ unlock()
++ toString() : String
+}
+
+Door -right- DoorState
+
+class Lock{
+- door : Door
++ Lock(door : Door)
+}
 
 class User {
 - name : String
