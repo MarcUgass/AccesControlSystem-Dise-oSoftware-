@@ -55,6 +55,14 @@ public class Door {
     }
   }
 
+  public Area getFromSpace() {
+    return fromSpace;
+  }
+
+  public Area getToSpace() {
+    return toSpace;
+  }
+
   public boolean isClosed() {
     return closed;
   }

@@ -1,12 +1,10 @@
 package baseNoStates.requests;
 
-import baseNoStates.DirectoryAreas;
-import baseNoStates.DirectoryUsers;
-import baseNoStates.Area;
-import baseNoStates.User;
-import baseNoStates.Door;
+import baseNoStates.*;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -78,7 +76,7 @@ public class RequestReader implements Request {
   // see if the request is authorized and put this into the request, then send it to the door.
   // if authorized, perform the action.
   public void process() {
-    User user = DirectoryUsers.findUserByCredential(credential);
+    User user = DirectoryUsersGroups.findUserByCredential(credential);
     Door door = DirectoryAreas.findDoorById(doorId);
     assert door != null : "door " + doorId + " not found";
     authorize(user, door);
@@ -98,7 +96,33 @@ public class RequestReader implements Request {
     } else {
       //TODO: get the who, where, when and what in order to decide, and if not
       // authorized add the reason(s)
-      authorized = true;
+      UserGroup userGroup = DirectoryUsersGroups.findUserGroupByUser(user.getCredential());
+
+      List<String> actions = userGroup.getActions();
+      List<Area> areas = userGroup.getAreas();
+      ArrayList<User> users = userGroup.getUsers();
+
+      boolean isSchedule = userGroup.getSchedule().isSchedule(now);
+
+      boolean actionsTrue = actions.contains(action);
+
+      boolean areaTrue = false;
+
+      if (areas.size() == 1 && areas.get(0).getId().equals("building")) {
+        areaTrue = true;
+      } else {
+        for (Area area : areas) {
+          if (door.getFromSpace() == area || door.getToSpace() == area) {
+            areaTrue = true;
+          }
+        }
+      }
+
+      if (areaTrue && isSchedule && actionsTrue) {
+        authorized = true;
+      } else {
+        authorized = false;
+      }
     }
   }
 }

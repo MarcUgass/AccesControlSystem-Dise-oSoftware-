@@ -27,13 +27,17 @@ public class DirectoryAreas {
     Space IT = new Space("IT", floor1);
     Space stairs = new Space("stairs", building);
     Space exterior = new Space("exterior", building);
+
     basement.addChild(parking);
+
     ground_floor.addChild(hall);
     ground_floor.addChild(room1);
     ground_floor.addChild(room2);
+
     floor1.addChild(room3);
     floor1.addChild(corridor);
     floor1.addChild(IT);
+
     building.addChild(stairs);
     building.addChild(exterior);
 
@@ -74,6 +78,8 @@ public class DirectoryAreas {
     stairs.addDoor(d7);
     exterior.addDoor(d1);
     exterior.addDoor(d3);
+
+
 
     alldoors = new ArrayList<>(Arrays.asList(d1, d2, d3, d4, d5, d6, d7, d8, d9));
     allareas = new ArrayList<>(Arrays.asList(building, basement, ground_floor, floor1, parking, hall, room1, room2, room3, corridor, IT, stairs, exterior));

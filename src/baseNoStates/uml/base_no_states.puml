@@ -43,7 +43,7 @@ class DirectoryAreas {
 
 DirectoryAreas --> "*" Door : "allDoors"
 
-class Area {
+abstract class Area {
 - id : String
 - doors: Door[]
 + Area(id : String)
@@ -54,6 +54,26 @@ class Area {
 }
 
 DirectoryAreas --> "*" Area : "allAreas"
+
+class Partition extends Area {
+- partition : Partition
+- childs: Area[]
++ Partition(id: String, parent: Partition)
++ findAreaById(id : String) : Area
++ getSpace() : String
++ getDoorsGivingAccess() : Door[]
++ addChild(area : Area)
+}
+
+class Space extends Area {
+- partition : Partition
+- doors: Door[]
++ Space(id: String, parent: Partition)
++ getSpace() : String
++ getDoorsGivingAccess() : Door[]
++ findAreaById(id : String) : Area
++ addDoor(door : Door)
+}
 
 class DirectoryUsers {
 - {static} users : User[]
@@ -89,9 +109,48 @@ class DoorState {
 
 Door -right- DoorState
 
-class Lock{
-- door : Door
+class Lock extends DoorState {
 + Lock(door : Door)
++ open()
++ close()
++ lock()
++ unlock()
++ unlock_shortly()
+}
+
+class Unlock extends DoorState {
++ Unlock(door : Door)
++ open()
++ close()
++ lock()
++ unlock()
++ unlock_shortly()
+}
+
+class UnlockedShortly extends DoorState {
++ UnlockedShortly(door : Door)
++ open()
++ close()
++ lock()
++ unlock()
++ unlock_shortly()
+}
+
+class Propped extends DoorState {
++ Propped(door : Door)
++ open()
++ close()
++ lock()
++ unlock()
++ unlock_shortly()
+}
+
+class Actions {
++ {static} OPEN : String
++ {static} CLOSE : String
++ {static} LOCK : String
++ {static} UNLOCK : String
++ {static} UNLOCK_SHORTLY : String
 }
 
 class User {

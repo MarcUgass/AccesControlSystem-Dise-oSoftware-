@@ -3,7 +3,6 @@ package baseNoStates;
 import java.util.ArrayList;
 
 public class Partition extends Area {
-  //private String id;
   private ArrayList<Area> childs = new ArrayList<>();
   private Partition partition;
 
@@ -44,9 +43,8 @@ public class Partition extends Area {
     for (Area area: childs){
       doors.addAll(area.getDoorsGivingAccess());
     }
-    return null;
+    return doors;
   }
-
 
   public void addChild(Area area) {
     childs.add(area);
