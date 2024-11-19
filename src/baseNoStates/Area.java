@@ -10,25 +10,28 @@ public abstract class Area {
   // s'utilitza protected, ja que les subclases poden accedir-hi
   protected ArrayList<Door> doors;
 
-  public Area(String id) {  //constructor per defecte
+  // Constructor per defecte que inicialitza l'ID de l'àrea i crea una llista buida de portes.
+  public Area(String id) {
     this.id = id;
     this.doors = new ArrayList<>();
   }
 
+  // Mètode abstracte per buscar una àrea pel seu ID.
   public abstract Area findAreaById(String id);
 
   public String getId() {
     return id;
   }
 
+  // Mètode abstracte per obtenir totes les espais associats a l'àrea.
   public abstract ArrayList<Space> getSpaces();
 
+  // Mètode abstracte per obtenir totes les portes que donen accés a altres àrees o espais.
   public abstract ArrayList<Door> getDoorsGivingAccess();
 
   public void setDoors(ArrayList<Door> doors) {
     this.doors = doors;
   }
-
 
   @Override
   public String toString() {
@@ -41,3 +44,4 @@ public abstract class Area {
     return json;
   }
 }
+

@@ -9,7 +9,8 @@ public class UserGroup {
   private final ArrayList<Area> areas;
   private final ArrayList<User> users;
 
-  public UserGroup(String id, Schedule schedule, ArrayList<String> actions, ArrayList<Area> areas, ArrayList<User> users) {
+  public UserGroup(String id, Schedule schedule, ArrayList<String> actions,
+                   ArrayList<Area> areas, ArrayList<User> users) {
     this.id = id;
     this.schedule = schedule;
     this.actions = actions;

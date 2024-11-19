@@ -3,6 +3,7 @@ package baseNoStates;
 import java.util.ArrayList;
 
 public class Partition extends Area {
+  // Llista de sub-àrees (fills) associades a aquesta partició.
   private ArrayList<Area> childs = new ArrayList<>();
   private Partition partition;
 
@@ -30,7 +31,7 @@ public class Partition extends Area {
   @Override
   public ArrayList<Space> getSpaces() {
     ArrayList<Space> spaces = new ArrayList<>();
-    for (Area area: childs){
+    for (Area area : childs) {
       spaces.addAll(area.getSpaces());
     }
     return spaces;
@@ -40,7 +41,7 @@ public class Partition extends Area {
   @Override
   public ArrayList<Door> getDoorsGivingAccess() {
     ArrayList<Door> doors = new ArrayList<>();
-    for (Area area: childs){
+    for (Area area : childs) {
       doors.addAll(area.getDoorsGivingAccess());
     }
     return doors;

@@ -1,4 +1,5 @@
 package baseNoStates;
+
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Timer;
@@ -12,17 +13,18 @@ public class UnlockedShortly extends DoorState implements Observer {
     timer.addObserver(this);
     timer.startTimer();
   }
-/*
-  private void startTimer() {
-    Timer timer = new Timer();
-    timer.schedule(new TimerTask() {
-      @Override
-      public void run() {
-        checkDoorState();
-      }
-    }, 10000);
-  }
-*/
+
+  // private void startTimer() {
+  //  Timer timer = new Timer();
+  //   timer.schedule(new TimerTask() {
+  //     @Override
+  //    public void run() {
+  //     checkDoorState();
+  //   }
+  //   }, 10000);
+  //  }
+
+
   private void checkDoorState() {
     if (door.isClosed()) {
       door.setState(new Lock(door));
@@ -38,8 +40,9 @@ public class UnlockedShortly extends DoorState implements Observer {
     if (door.isClosed()) {
       door.setClosed(false);
       System.out.println("Door " + door.getId() + " is now open.");
-    } else
+    } else {
       System.out.println("Door " + door.getId() + " is already open.");
+    }
   }
 
 
@@ -49,8 +52,9 @@ public class UnlockedShortly extends DoorState implements Observer {
       door.setClosed(true);
       door.setState(new Propped(door));
       System.out.println("Door " + door.getId() + " is now closed.");
-    } else
+    } else {
       System.out.println("Door " + door.getId() + " is already closed.");
+    }
   }
 
   @Override

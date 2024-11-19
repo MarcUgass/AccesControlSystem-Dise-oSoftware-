@@ -8,53 +8,53 @@ public class DirectoryAreas {
   private static ArrayList<Door> alldoors;
   private static ArrayList<Area> allareas;
 
-  //funcio per construir l'arbre d'arees donat a l'enunciat
+  // Funció per construir l'arbre d'árees donat a l'enunciat
   public static void makeAreas() {
     Partition building = new Partition("building", null);
     Partition basement = new Partition("basement", building);
-    Partition ground_floor = new Partition("ground_floor", building);
+    Partition groundFloor = new Partition("ground_floor", building); // canviat a camelCase
     Partition floor1 = new Partition("floor1", building);
     building.addChild(basement);
-    building.addChild(ground_floor);
+    building.addChild(groundFloor); // canviat aquí també
     building.addChild(floor1);
 
-    Space parking = new Space("parking", basement);
-    Space hall = new Space("hall", ground_floor);
-    Space room1 = new Space("room1", ground_floor);
-    Space room2 = new Space("room2", ground_floor);
-    Space room3 = new Space("room3", floor1);
-    Space corridor = new Space("corridor", floor1);
-    Space IT = new Space("IT", floor1);
-    Space stairs = new Space("stairs", building);
-    Space exterior = new Space("exterior", building);
+    final Space parking = new Space("parking", basement);
+    final Space hall = new Space("hall", groundFloor); // declarada final
+    final Space room1 = new Space("room1", groundFloor); // declarada final
+    final Space room2 = new Space("room2", groundFloor); // declarada final
+    final Space room3 = new Space("room3", floor1); // declarada final
+    final Space corridor = new Space("corridor", floor1); // declarada final
+    final Space itRoom = new Space("IT", floor1); // Renombrada a itRoom
+    final Space stairs = new Space("stairs", building); // declarada final
+    final Space exterior = new Space("exterior", building); // declarada final
 
     basement.addChild(parking);
 
-    ground_floor.addChild(hall);
-    ground_floor.addChild(room1);
-    ground_floor.addChild(room2);
+    groundFloor.addChild(hall);
+    groundFloor.addChild(room1);
+    groundFloor.addChild(room2);
 
     floor1.addChild(room3);
     floor1.addChild(corridor);
-    floor1.addChild(IT);
+    floor1.addChild(itRoom);
 
     building.addChild(stairs);
     building.addChild(exterior);
 
     root = building;
 
-    //basement
-    Door d1 = new Door("D1", exterior, parking);
-    Door d2 = new Door("D2", stairs, parking);
-    //ground_floor
-    Door d3 = new Door("D3", exterior, hall);
-    Door d4 = new Door("D4", stairs, hall);
-    Door d5 = new Door("D5", hall, room1);
-    Door d6 = new Door("D6", hall, room2);
-    //first floor
-    Door d7 = new Door("D7", stairs, corridor);
-    Door d8 = new Door("D8", corridor, room3);
-    Door d9 = new Door("D9", corridor, IT);
+    // basement
+    final Door d1 = new Door("D1", exterior, parking);
+    final Door d2 = new Door("D2", stairs, parking);
+    // groundFloor
+    final Door d3 = new Door("D3", exterior, hall);
+    final Door d4 = new Door("D4", stairs, hall);
+    final  Door d5 = new Door("D5", hall, room1);
+    final  Door d6 = new Door("D6", hall, room2);
+    // first floor
+    final Door d7 = new Door("D7", stairs, corridor);
+    final Door d8 = new Door("D8", corridor, room3);
+    final  Door d9 = new Door("D9", corridor, itRoom);
 
     parking.addDoor(d1);
     parking.addDoor(d2);
@@ -72,18 +72,22 @@ public class DirectoryAreas {
     corridor.addDoor(d8);
     corridor.addDoor(d9);
 
-    IT.addDoor(d9);
+    itRoom.addDoor(d9);
     stairs.addDoor(d2);
     stairs.addDoor(d4);
     stairs.addDoor(d7);
     exterior.addDoor(d1);
     exterior.addDoor(d3);
 
-
-
-    alldoors = new ArrayList<>(Arrays.asList(d1, d2, d3, d4, d5, d6, d7, d8, d9));
-    allareas = new ArrayList<>(Arrays.asList(building, basement, ground_floor, floor1, parking, hall, room1, room2, room3, corridor, IT, stairs, exterior));
+    alldoors = new ArrayList<>(Arrays.asList(
+        d1, d2, d3, d4, d5, d6, d7, d8, d9
+    ));
+    allareas = new ArrayList<>(Arrays.asList(
+        building, basement, groundFloor, floor1, parking, hall, room1,
+        room2, room3, corridor, itRoom, stairs, exterior
+    ));
   }
+
   public static Area findAreaById(String id) {
     return root.findAreaById(id);
   }
@@ -98,10 +102,9 @@ public class DirectoryAreas {
     return null;
   }
 
-  //refresh request
+  // Refresh request
   public static ArrayList<Door> getAllDoors() {
     System.out.println(alldoors);
     return alldoors;
   }
-
 }

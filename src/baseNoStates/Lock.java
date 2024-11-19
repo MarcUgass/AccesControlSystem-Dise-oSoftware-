@@ -31,7 +31,7 @@ public class Lock extends DoorState {
   // encara que necessitem una altre, perque es pot cirdar desde una altre state
   @Override
   public void unlock_shortly() {
-  door.setState(new UnlockedShortly(door));
-  System.out.println("Door " + door.getId() + " will be unlocked shortly.");
+    door.setState(new UnlockedShortly(door));
+    System.out.println("Door " + door.getId() + " will be unlocked shortly.");
   }
 }

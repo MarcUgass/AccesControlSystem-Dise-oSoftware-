@@ -3,7 +3,7 @@ package baseNoStates;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Space extends Area{
+public class Space extends Area {
   private Partition parent;
   private ArrayList<Door> doors = new ArrayList<>();
 
@@ -12,10 +12,10 @@ public class Space extends Area{
     this.parent = parent;
   }
 
-//Space no te sub-arees, torna una llista buida
+  //Space no te sub-arees, torna una llista buida
   @Override
   public Area findAreaById(String id) {
-    if(this.getId().equals(id)){
+    if (this.getId().equals(id)) {
       return this;  //si el id coincideix, retorna aquest espai
     }
     return null; //si no coincideix, no busca mes perque no conté sub-arees

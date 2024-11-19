@@ -4,7 +4,6 @@ import baseNoStates.requests.Request;
 import baseNoStates.requests.RequestReader;
 import baseNoStates.requests.RequestRefresh;
 import baseNoStates.requests.RequestArea;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
