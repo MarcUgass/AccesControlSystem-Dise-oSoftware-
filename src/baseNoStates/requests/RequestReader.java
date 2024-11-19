@@ -123,6 +123,7 @@ public class RequestReader implements Request {
       } else {
         authorized = false;
       }
+      //authorized = true;
     }
   }
 }

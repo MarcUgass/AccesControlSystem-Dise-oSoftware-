@@ -1,14 +1,18 @@
 package baseNoStates;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class UnlockedShortly extends DoorState {
+public class UnlockedShortly extends DoorState implements Observer {
 
   public UnlockedShortly(Door door) {
     super(door, "unlocked_shortly");
-    startTimer();
+    ClockTimer timer = ClockTimer.getInstance();
+    timer.addObserver(this);
+    timer.startTimer();
   }
-
+/*
   private void startTimer() {
     Timer timer = new Timer();
     timer.schedule(new TimerTask() {
@@ -18,7 +22,7 @@ public class UnlockedShortly extends DoorState {
       }
     }, 10000);
   }
-
+*/
   private void checkDoorState() {
     if (door.isClosed()) {
       door.setState(new Lock(door));
@@ -43,7 +47,7 @@ public class UnlockedShortly extends DoorState {
   public void close() {
     if (!door.isClosed()) {
       door.setClosed(true);
-      door.setState(new Lock(door));
+      door.setState(new Propped(door));
       System.out.println("Door " + door.getId() + " is now closed.");
     } else
       System.out.println("Door " + door.getId() + " is already closed.");
@@ -63,5 +67,16 @@ public class UnlockedShortly extends DoorState {
   @Override
   public void unlock_shortly() {
     System.out.println("Door " + door.getId() + " is already unlocked.");
+  }
+
+  @Override
+  public void update(Observable o, Object arg) {
+    if (door.isClosed()) {
+      door.setState(new Lock(door));
+      System.out.println("Door " + door.getId() + " is now closed.");
+    } else {
+      door.setState(new Propped(door));
+      System.out.println("Door " + door.getId() + " is still unlocked.");
+    }
   }
 }
