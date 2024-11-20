@@ -8,6 +8,6 @@ public class Main {
     //DirectoryDoors.makeDoors();
     DirectoryAreas.makeAreas();
     DirectoryUsersGroups.makeUsersGroups();
-    new WebServer();
+    WebServer.getInstance();
   }
 }

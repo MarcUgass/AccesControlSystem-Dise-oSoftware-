@@ -1,25 +1,37 @@
 package baseNoStates;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.Arrays;
-/*
- * Classe per gestionar els grups d'usuaris.
- * Cada grup té un horari, accions permeses, zones accessibles i una llista d'usuaris.
- */
 
+/**
+ * Class to manage user groups.
+ * Each group has a schedule, allowed actions, accessible areas and a list of users.
+ * The groups are: employees, managers and administrators, each with different permissions.
+ */
 public class DirectoryUsersGroups {
   private static final ArrayList<UserGroup> userGroups = new ArrayList<>();
 
   private static final Integer ONE = 1;
   private static final Integer YEAR = 2024;
 
-  //Crea els grups d'usuaris i els afegeix al directori.
+  private static final Logger LOGGER = LoggerFactory.getLogger(DirectoryUsersGroups.class);
+
+  /**
+   * Creates user groups and adds them to the directory.
+   * Configures schedules, actions and areas for each group.
+   */
   public static void makeUsersGroups() {
-    // Employees
+    // Employees group configuration
+    // Access: Ground floor, floor1, exterior, stairs
+    // Schedule: Sep 1 - Mar 1, Mon-Fri 9:00-17:00
+    // Actions: Can only unlock shortly, open and close
     LocalDate startDateEmployee = LocalDate.of(YEAR, Month.SEPTEMBER, ONE);
     LocalDate endDateEmployee = LocalDate.of(YEAR, Month.MARCH, ONE);
 
@@ -50,7 +62,12 @@ public class DirectoryUsersGroups {
 
     userGroups.add(employee);
 
-    // Managers
+    LOGGER.debug("Employee group created");
+
+    // Managers group configuration
+    // Access: All building areas
+    // Schedule: Sep 1 - Mar 1 next year, Mon-Sat 8:00-20:00
+    // Actions: All actions allowed
     LocalDate dateInicioManagers = LocalDate.of(YEAR, Month.SEPTEMBER, ONE);
     LocalDate dateFinManagers = LocalDate.of(2025, Month.MARCH, ONE);
 
@@ -79,7 +96,12 @@ public class DirectoryUsersGroups {
 
     userGroups.add(managers);
 
-    // Admin
+    LOGGER.debug("Managers group created");
+
+    // Admin group configuration
+    // Access: All building areas
+    // Schedule: Jan 1 2024 - Jan 1 2100, All days 00:00-23:59
+    // Actions: All actions allowed
     LocalDate startDateAdmin = LocalDate.of(YEAR, Month.JANUARY, ONE);
     LocalDate endDateAdmin = LocalDate.of(2100, Month.JANUARY, ONE);
 
@@ -108,31 +130,43 @@ public class DirectoryUsersGroups {
         actionsAdmin, areasAdmin, usersAdmin);
 
     userGroups.add(admin);
+
+    LOGGER.debug("Admin group created");
   }
 
-  // we search a concrete user by his credential
-  // returns a User object if it finds it
+  /**
+   * Searches for a specific user by their credential.
+   * @param credential The credential to search for
+   * @return User object if found, null otherwise
+   */
   public static User findUserByCredential(final String credential) {
     for (UserGroup userGroup : userGroups) {
       for (User user : userGroup.getUsers()) {
         if (user.getCredential().equals(credential)) {
+          LOGGER.info("User with credential " + credential + " found");
           return user;
         }
       }
     }
+    LOGGER.warn("User with credential " + credential + " not found");
     return null;
   }
 
-  // we search a concrete userGroup by a user that belongs to it
-  // returns a UserGroup object if it finds it
+  /**
+   * Searches for a specific userGroup by a user that belongs to it.
+   * @param credential The credential of the user to search for
+   * @return UserGroup object if found, null otherwise
+   */
   public static UserGroup findUserGroupByUser(final String credential) {
     for (UserGroup userGroup : userGroups) {
       for (User user : userGroup.getUsers()) {
         if (user.getCredential().equals(credential)) {
+          LOGGER.info("User group with user " + credential + " found");
           return userGroup;
         }
       }
     }
+    LOGGER.warn("User group with user " + credential + " not found");
     return null;
   }
 }

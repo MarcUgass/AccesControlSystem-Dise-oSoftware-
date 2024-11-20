@@ -12,7 +12,7 @@ public class Space extends Area {
     this.parent = parent;
   }
 
-  // Retorna l'àrea si el seu identificador coincideix amb l'indicat, o null en cas contrari.
+  // Returns the area if its identifier matches the given one, or null otherwise
   @Override
   public Area findAreaById(String id) {
     if (this.getId().equals(id)) {
@@ -20,20 +20,20 @@ public class Space extends Area {
     }
     return null;
   }
-  // Obté una llista que conté aquest espai, ja que no hi ha sub-àrees
+  // Gets a list containing this space, since there are no sub-areas
 
   @Override
   public ArrayList<Space> getSpaces() {
     return new ArrayList<>(Arrays.asList(this));
   }
-  // Obté la llista de portes associades a aquest espai.
+  // Gets the list of doors associated with this space
 
   @Override
-  public ArrayList<Door> getDoorsGivingAccess() {
-    return doors; //retorna les portes associades a aquest space
+  public ArrayList<baseNoStates.Door> getDoorsGivingAccess() {
+    return doors; // returns the doors associated with this space
   }
 
-  public void addDoor(Door door) {
+  public void addDoor(baseNoStates.Door door) {
     doors.add(door);
   }
 

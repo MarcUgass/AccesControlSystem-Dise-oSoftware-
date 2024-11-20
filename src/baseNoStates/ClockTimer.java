@@ -6,23 +6,23 @@ import java.util.TimerTask;
 
 public class ClockTimer extends Observable {
   /*
-   * Classe responsable de gestionar un temporitzador de 10 segons
-   * per bloquejar després de l'estat UnlockShortly.
-   * Implementa els patrons de disseny Observer i Singleton.
+   * Class responsible for managing a 10 second timer
+   * to lock after the UnlockShortly state.
+   * Implements Observer and Singleton design patterns.
    */
   private int seconds;
-  // Instància única de ClockTimer per implementar el patró Singleton.
+  // Single instance of ClockTimer to implement Singleton pattern.
   private static ClockTimer clockInstance = null;
 
-  // Constructor privat per evitar la creació d'instàncies externes.
+  // Private constructor to prevent creation of external instances.
   private ClockTimer() {
     this.seconds = 0;
     startTimer();
   }
 
   /*
-   * Inicia un temporitzador amb intervals de 10 segons.
-   * Després de 10 segons, es notifica als observadors.
+   * Starts a timer with 10 second intervals.
+   * After 10 seconds, observers are notified.
    */
   public void startTimer() {
     Timer timer = new Timer();
@@ -31,15 +31,15 @@ public class ClockTimer extends Observable {
       public void run() {
         seconds += 10;
         if (seconds >= 10) {
-          timer.cancel(); // Atura el temporitzador després dels 10 segons.
+          timer.cancel(); // Stops the timer after 10 seconds.
         }
         setChanged();
-        notifyObservers(seconds); // Notifica els observadors amb el temps actualitzat.
+        notifyObservers(seconds); // Notifies observers with updated time.
       }
     }, 10000, 10000);
   }
 
-  // Retorna l'única instància de ClockTimer (patró Singleton).
+  // Returns the single instance of ClockTimer (Singleton pattern).
   public static ClockTimer getInstance() {
     if (clockInstance == null) {
       clockInstance = new ClockTimer();

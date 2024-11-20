@@ -1,20 +1,23 @@
 package baseNoStates;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public abstract class DoorState {
   protected Door door;
   protected String name;
 
   /*
-   * Classe abstracta que defineix els estats d'una porta.
-   * Cada estat especifica el comportament de la porta per
-   * a accions com obrir, tancar, bloquejar, etc.
-   * Utilitza el patró de disseny State.
+   * Abstract class that defines the states of a door.
+   * Each state specifies the door's behavior for
+   * actions like opening, closing, locking, etc.
+   * Uses the State design pattern.
    */
   public DoorState(Door door, String name) {
     this.door = door;
     this.name = name;
   }
-  //PATRO STATE
+  // STATE PATTERN
 
   public abstract void open();
 

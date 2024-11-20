@@ -1,12 +1,17 @@
 package baseNoStates;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Observable;
 import java.util.Observer;
-import java.util.Timer;
-import java.util.TimerTask;
 
-// Estat temporal en què la porta es desbloqueja per un període curt de temps.
+/**
+ * Class that represents the "unlocked shortly" state of a door.
+ * In this state, the door is unlocked for a short period of time.
+ */
 public class UnlockedShortly extends DoorState implements Observer {
+  private final static Logger LOGGER = LoggerFactory.getLogger(UnlockedShortly.class);
 
   public UnlockedShortly(Door door) {
     super(door, "unlocked_shortly");
@@ -15,74 +20,76 @@ public class UnlockedShortly extends DoorState implements Observer {
     timer.startTimer();
   }
 
-  // private void startTimer() {
-  //  Timer timer = new Timer();
-  //   timer.schedule(new TimerTask() {
-  //     @Override
-  //    public void run() {
-  //     checkDoorState();
-  //   }
-  //   }, 10000);
-  //  }
-
-  // Comprova l'estat actual de la porta i decideix el següent estat.
+  /**
+   * Checks the current state of the door and decides the next state
+   */
   private void checkDoorState() {
     if (door.isClosed()) {
+      LOGGER.info("Door " + door.getId() + " is now closed.");
       door.setState(new Lock(door));
-      System.out.println("Door " + door.getId() + " is now closed.");
     } else {
+      LOGGER.info("Door " + door.getId() + " is still unlocked.");
       door.setState(new Propped(door));
-      System.out.println("Door " + door.getId() + " is still unlocked.");
     }
   }
-  // Comprova l'estat actual de la porta i decideix el següent estat.
 
-  @Override
+  /**
+   * Opens the door
+   */
   public void open() {
     if (door.isClosed()) {
       door.setClosed(false);
-      System.out.println("Door " + door.getId() + " is now open.");
+      LOGGER.info("Door " + door.getId() + " is now open.");
     } else {
-      System.out.println("Door " + door.getId() + " is already open.");
+      LOGGER.warn("Door " + door.getId() + " is already open.");
     }
   }
-
 
   @Override
   public void close() {
     if (!door.isClosed()) {
       door.setClosed(true);
+      LOGGER.info("Door " + door.getId() + " is now closed.");
       door.setState(new Propped(door));
-      System.out.println("Door " + door.getId() + " is now closed.");
     } else {
-      System.out.println("Door " + door.getId() + " is already closed.");
+      LOGGER.warn("Door " + door.getId() + " is already closed.");
     }
   }
 
   @Override
   public void lock() {
-    System.out.println("Cannot lock the door because it's open.");
+    if (door.isClosed()) {
+      door.setState(new Lock(door));
+      LOGGER.info("Door " + door.getId() + " is now locked.");
+    } else {
+      LOGGER.warn("Cannot lock the door " + door.getId() + " because it's open.");
+    }
   }
 
   @Override
   public void unlock() {
+    LOGGER.info("Door " + door.getId() + " is now unlocked.");
     door.setState(new Unlocked(door));
-    System.out.println("Door " + door.getId() + " is now unlocked.");
   }
 
   @Override
   public void unlock_shortly() {
-    System.out.println("Door " + door.getId() + " is already unlocked.");
+    LOGGER.warn("Cannot unlock shortly the door " + door.getId() + " because it's already unlocked.");
   }
 
+  /**
+   * Updates the state of the door based on the current time
+   * @param o Observable object
+   * @param arg Object argument
+   */
   @Override
   public void update(Observable o, Object arg) {
     if (door.isClosed()) {
+      LOGGER.info("Door " + door.getId() + " is now closed.");
       door.setState(new Lock(door));
-      System.out.println("Door " + door.getId() + " is now closed.");
     } else {
+      LOGGER.info("Door " + door.getId() + " is still unlocked.");
       door.setState(new Propped(door));
-      System.out.println("Door " + door.getId() + " is still unlocked.");
     }
   }
 }

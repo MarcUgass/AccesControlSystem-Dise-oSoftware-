@@ -1,6 +1,11 @@
 package baseNoStates;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class Unlocked extends DoorState {
+  private static final Logger LOGGER = LoggerFactory.getLogger(Unlocked.class);
+
 
   public Unlocked(Door door) {
     super(door, "unlocked");
@@ -10,9 +15,9 @@ public class Unlocked extends DoorState {
   public void open() {
     if (door.isClosed()) {
       door.setClosed(false);
-      System.out.println("Door " + door.getId() + " is now open.");
+      LOGGER.info("Door " + door.getId() + " is now open.");
     } else {
-      System.out.println("Door " + door.getId() + " is already open.");
+      LOGGER.warn("Door " + door.getId() + " is already open.");
     }
   }
 
@@ -20,9 +25,9 @@ public class Unlocked extends DoorState {
   public void close() {
     if (!door.isClosed()) {
       door.setClosed(true);
-      System.out.println("Door " + door.getId() + " is now closed.");
+      LOGGER.info("Door " + door.getId() + " is now closed.");
     } else {
-      System.out.println("Door " + door.getId() + " is already closed.");
+      LOGGER.warn("Door " + door.getId() + " is already closed.");
     }
   }
 
@@ -30,19 +35,19 @@ public class Unlocked extends DoorState {
   public void lock() {
     if (door.isClosed()) {
       door.setState(new Lock(door));
-      System.out.println("Door " + door.getId() + " is now locked.");
+      LOGGER.info("Door " + door.getId() + " is now locked.");
     } else {
-      System.out.println("Cannot lock the door because it's open.");
+      LOGGER.warn("Cannot lock the door "+ door.getId() +  " because it's open.");
     }
   }
 
   @Override
   public void unlock() {
-    System.out.println("Door " + door.getId() + " is already unlocked.");
+    LOGGER.warn("Cannot unlock the door " + door.getId() + " because it's already unlocked.");
   }
 
   @Override
   public void unlock_shortly() {
-    System.out.println("Door " + door.getId() + " is already unlocked.");
+    LOGGER.warn("Cannot unlock shortly the door " + door.getId() + " because it's already unlocked.");
   }
 }

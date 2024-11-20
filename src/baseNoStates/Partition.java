@@ -1,39 +1,42 @@
 package baseNoStates;
 
 import java.util.ArrayList;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /*
- * Classe que representa una partició (àrea composta).
- * Una partició pot contenir altres sub-àrees i espais.
+ * Class that represents a partition (composite area).
+ * A partition can contain other sub-areas and spaces.
  */
 public class Partition extends Area {
-  // Llista de sub-àrees (fills) associades a aquesta partició.
+  // List of sub-areas (children) associated with this partition
   private ArrayList<Area> childs = new ArrayList<>();
   private Partition partition;
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(Partition.class);
 
   public Partition(String id, Partition parent) { //constructor
     super(id);
     this.partition = parent;
   }
 
-
-  //funcio que busca un àrea pel seu identificador
+  //Function that searches for an area by its identifier
   @Override
   public Area findAreaById(String id) {
     if (this.getId().equals(id)) {
-      return this;  //si el id coincideix, retorna aquesta particio
+      return this;  //if the id matches, returns this partition
     }
-    for (Area area : childs) { //si no coincideix, mira a totes les sub-arees
+    for (Area area : childs) { //if it doesn't match, look in all sub-areas
       Area found = area.findAreaById(id);
       if (found != null) {
         return found;
       }
     }
-    //si no troba res, retorna null
+    //if nothing is found, returns null
     return null;
   }
 
-  //Obté tots els espais continguts en aquesta partició i les seves sub-àrees.
+  //Gets all spaces contained in this partition and its sub-areas
   @Override
   public ArrayList<Space> getSpaces() {
     ArrayList<Space> spaces = new ArrayList<>();
@@ -43,10 +46,10 @@ public class Partition extends Area {
     return spaces;
   }
 
-  //getter que mira de totes les zones les portes que hi tenen accés
+  //Getter that looks at all zones for doors that give access to them
   @Override
-  public ArrayList<Door> getDoorsGivingAccess() {
-    ArrayList<Door> doors = new ArrayList<>();
+  public ArrayList<baseNoStates.Door> getDoorsGivingAccess() {
+    ArrayList<baseNoStates.Door> doors = new ArrayList<>();
     for (Area area : childs) {
       doors.addAll(area.getDoorsGivingAccess());
     }
@@ -57,8 +60,7 @@ public class Partition extends Area {
     return childs;
   }
 
-  //afegir una nova sub-àrea a la partició
-
+  //Add a new sub-area to the partition
   public void addChild(Area area) {
     childs.add(area);
   }
@@ -67,7 +69,7 @@ public class Partition extends Area {
   public void accept(Visitor visitor) {
     visitor.visit(this);
     for (Area area : childs) {
-      area.accept(visitor); // Recursivamente visita las sub-áreas
+      area.accept(visitor); // Recursively visit sub-areas
     }
   }
 }

@@ -5,7 +5,7 @@ import java.util.Arrays;
 
 
 public class GetDoorsVisitor implements Visitor {
-  private ArrayList<Door> doors = new ArrayList<>();
+  private ArrayList<baseNoStates.Door> doors = new ArrayList<>();
 
   public ArrayList<Door> getDoors() {
     return doors;

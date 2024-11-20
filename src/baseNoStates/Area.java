@@ -1,32 +1,35 @@
 package baseNoStates;
 
 import java.util.ArrayList;
-import org.json.JSONArray;
+
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class Area {
   private String id;
-  // Llista de portes que té cada àrea.
-  // Es defineix com a protected perquè les subclasses puguin accedir-hi.
+  // List of doors that each area has.
+  // Defined as protected so subclasses can access it.
   protected ArrayList<Door> doors;
+  private static final Logger LOGGER = LoggerFactory.getLogger(Area.class);
 
-  // Constructor per defecte que inicialitza l'ID de l'àrea i crea una llista buida de portes.
+  // Default constructor that initializes the area ID and creates an empty list of doors.
   public Area(String id) {
     this.id = id;
     this.doors = new ArrayList<>();
   }
 
-  // Mètode abstracte per buscar una àrea pel seu ID.
+  // Abstract method to find an area by its ID.
   public abstract Area findAreaById(String id);
 
   public String getId() {
     return id;
   }
 
-  // Mètode abstracte per obtenir totes les espais associats a l'àrea.
+  // Abstract method to get all spaces associated with the area.
   public abstract ArrayList<Space> getSpaces();
 
-  // Mètode abstracte per obtenir totes les portes que donen accés a altres àrees o espais.
+  // Abstract method to get all doors that give access to other areas or spaces.
   public abstract ArrayList<Door> getDoorsGivingAccess();
 
   public void setDoors(ArrayList<Door> doors) {
@@ -38,7 +41,7 @@ public abstract class Area {
     return "Area(" + ", id=" + id + '\'' + ")";
   }
 
-  // Converteix l'àrea en un objecte JSON.
+  // Converts the area to a JSON object.
   public JSONObject toJson() {
     JSONObject json = new JSONObject();
     json.put("id", id);

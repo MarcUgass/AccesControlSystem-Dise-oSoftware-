@@ -1,35 +1,40 @@
 package baseNoStates;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class DirectoryAreas {
-  public static Area root; // Arrel de l'arbre d'àrees.
-  private static ArrayList<Door> alldoors; // Llista de totes les portes.
-  private static ArrayList<Area> allareas; // Llista de totes les àrees.
+  public static Area root; // Root of the areas tree
+  private static ArrayList<Door> alldoors; // List of all doors
+  private static ArrayList<Area> allareas; // List of all areas
+  private static final Logger LOGGER = LoggerFactory.getLogger(DirectoryAreas.class);
 
-  // Crea l'arbre d'àrees segons l'enunciat.
+
+  // Creates the areas tree according to the statement
   public static void makeAreas() {
     Partition building = new Partition("building", null);
     Partition basement = new Partition("basement", building);
-    Partition groundFloor = new Partition("ground_floor", building); // Canviat a camelCase.
+    Partition groundFloor = new Partition("ground_floor", building); // Changed to camelCase
     Partition floor1 = new Partition("floor1", building);
     building.addChild(basement);
-    building.addChild(groundFloor); // Afegit groundFloor a la jerarquia.
+    building.addChild(groundFloor); // Added groundFloor to hierarchy
     building.addChild(floor1);
 
-    // Creació d'espais associats a cada partició.
+    // Creation of spaces associated with each partition
     final Space parking = new Space("parking", basement);
     final Space hall = new Space("hall", groundFloor);
     final Space room1 = new Space("room1", groundFloor);
     final Space room2 = new Space("room2", groundFloor);
     final Space room3 = new Space("room3", floor1);
     final Space corridor = new Space("corridor", floor1);
-    final Space itRoom = new Space("IT", floor1); // Renombrada a itRoom.
+    final Space itRoom = new Space("IT", floor1); // Renamed to itRoom
     final Space stairs = new Space("stairs", building);
     final Space exterior = new Space("exterior", building);
 
-    // Assignació de subespais a les particions corresponents.
+    // Assignment of subspaces to corresponding partitions
     basement.addChild(parking);
     groundFloor.addChild(hall);
     groundFloor.addChild(room1);
@@ -40,9 +45,11 @@ public class DirectoryAreas {
     building.addChild(stairs);
     building.addChild(exterior);
 
-    root = building; // Assigna l'arrel de l'arbre.
+    root = building; // Assigns the root of the tree
 
-    // Creació de portes entre els espais.
+    LOGGER.debug("Assignment of subspaces to corresponding partitions");
+
+    // Creation of doors between spaces
     final Door d1 = new Door("D1", exterior, parking);
     final Door d2 = new Door("D2", stairs, parking);
     final Door d3 = new Door("D3", exterior, hall);
@@ -53,7 +60,9 @@ public class DirectoryAreas {
     final Door d8 = new Door("D8", corridor, room3);
     final Door d9 = new Door("D9", corridor, itRoom);
 
-    // Assignació de portes a cada espai.
+    LOGGER.debug("Creation of doors between spaces");
+
+    // Assignment of doors to each space
     parking.addDoor(d1);
     parking.addDoor(d2);
     hall.addDoor(d3);
@@ -73,33 +82,39 @@ public class DirectoryAreas {
     exterior.addDoor(d1);
     exterior.addDoor(d3);
 
-    // Inicialitza les llistes de portes i àrees.
+    LOGGER.debug("Assignment of doors to each space");
+
+    // Initialize lists of doors and areas
     alldoors = new ArrayList<>(Arrays.asList(d1, d2, d3, d4, d5, d6, d7, d8, d9));
     allareas = new ArrayList<>(Arrays.asList(
         building, basement, groundFloor, floor1, parking, hall, room1,
         room2, room3, corridor, itRoom, stairs, exterior
     ));
+
+    LOGGER.debug("Initialization of lists of doors and areas");
+
   }
 
-  // Busca una àrea pel seu ID dins de l'arbre d'àrees.
+  // Searches for an area by its ID within the areas tree
   public static Area findAreaById(String id) {
     return root.findAreaById(id);
   }
 
-  // Busca una porta pel seu ID dins de la llista de portes.
+  // Searches for a door by its ID within the doors list
   public static Door findDoorById(String id) {
     for (Door door : alldoors) {
       if (door.getId().equals(id)) {
+        LOGGER.info("door with id " + id + " found");
         return door;
       }
     }
-    System.out.println("door with id " + id + " not found");
+    LOGGER.warn("door with id " + id + " not found");
     return null;
   }
 
-  // Retorna la llista de totes les portes (actualitza si cal).
+  // Returns the list of all doors (updates if necessary)
   public static ArrayList<Door> getAllDoors() {
-    System.out.println(alldoors);
+    LOGGER.info("Returning all doors");
     return alldoors;
   }
 }

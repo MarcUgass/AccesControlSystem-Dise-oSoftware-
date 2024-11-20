@@ -22,7 +22,8 @@ public class WebServer {
   private static final DateTimeFormatter formatter =
           DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
 
-  public WebServer() {
+  private static WebServer instance = null;
+  private WebServer() {
     try {
       ServerSocket serverConnect = new ServerSocket(PORT);
       System.out.println("Server started.\nListening for connections on port : " + PORT + " ...\n");
@@ -37,6 +38,12 @@ public class WebServer {
     }
   }
 
+  public static WebServer getInstance() {
+    if (instance == null) {
+      instance = new WebServer();
+    }
+    return instance;
+  }
 
   private class SocketThread extends Thread {
     // as an inner class, SocketThread sees WebServer attributes

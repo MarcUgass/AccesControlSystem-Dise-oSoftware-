@@ -2,31 +2,34 @@ package baseNoStates;
 
 import baseNoStates.requests.RequestReader;
 import org.json.JSONObject;
+import org.slf4j.Logger;
 
 /*
- * Classe que representa una porta amb estat dinàmic.
- * Utilitza el patró State per gestionar accions com obrir, tancar o bloquejar.
+ * Class representing a door with dynamic state.
+ * Uses the State pattern to manage actions like opening, closing or locking.
  */
 public class Door {
   private final String id;
   private boolean closed;
   //boolean locked;
-  private DoorState state; // Estado actual de la puerta lock/unlock
-  private Space fromSpace;  // mirar d'on ve la porta
-  private Space toSpace;  // mirar a ón va la porta
+  private DoorState state; // Current door state (locked/unlocked)
+  private Space fromSpace;  // Space where the door comes from
+  private Space toSpace;  // Space where the door goes to
+
+  private static final Logger LOGGER = org.slf4j.LoggerFactory.getLogger(Door.class);
+
 
   public Door(String id, Space fromSpace, Space toSpace) {
     this.id = id;
     closed = true;
-    this.state = new Unlocked(this); // Estado inicial
+    this.state = new Unlocked(this); // Initial state
     this.fromSpace = fromSpace;
     this.toSpace = toSpace;
-
   }
 
   /*
-   * Processa una sol·licitud per a la porta.
-   * @param request La sol·licitud que es processarà.
+   * Processes a request for the door.
+   * @param request The request to be processed.
    */
   public void processRequest(RequestReader request) {
     // it is the Door that process the request because the door has and knows
@@ -35,7 +38,7 @@ public class Door {
       String action = request.getAction();
       doAction(action);
     } else {
-      System.out.println("not authorized");
+      LOGGER.warn("Request not authorized");
     }
     request.setDoorStateName(getStateName());
   }
@@ -58,7 +61,7 @@ public class Door {
         state.unlock_shortly();
         break;
       default:
-        System.out.println("Action " + action + " not implemented.");
+        LOGGER.warn("Action " + action + " not implemented.");
     }
   }
 
