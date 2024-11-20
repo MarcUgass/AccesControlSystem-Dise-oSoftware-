@@ -3,7 +3,10 @@ package baseNoStates;
 import baseNoStates.requests.RequestReader;
 import org.json.JSONObject;
 
-
+/*
+ * Classe que representa una porta amb estat dinàmic.
+ * Utilitza el patró State per gestionar accions com obrir, tancar o bloquejar.
+ */
 public class Door {
   private final String id;
   private boolean closed;
@@ -21,6 +24,10 @@ public class Door {
 
   }
 
+  /*
+   * Processa una sol·licitud per a la porta.
+   * @param request La sol·licitud que es processarà.
+   */
   public void processRequest(RequestReader request) {
     // it is the Door that process the request because the door has and knows
     // its state, and if closed or open

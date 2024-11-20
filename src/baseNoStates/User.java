@@ -1,5 +1,7 @@
 package baseNoStates;
 
+// Classe que representa un usuari amb nom i credencial.
+
 public class User {
   private final String name;
   private final String credential;

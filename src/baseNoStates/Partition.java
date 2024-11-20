@@ -2,6 +2,10 @@ package baseNoStates;
 
 import java.util.ArrayList;
 
+/*
+ * Classe que representa una partició (àrea composta).
+ * Una partició pot contenir altres sub-àrees i espais.
+ */
 public class Partition extends Area {
   // Llista de sub-àrees (fills) associades a aquesta partició.
   private ArrayList<Area> childs = new ArrayList<>();
@@ -11,6 +15,7 @@ public class Partition extends Area {
     super(id);
     this.partition = parent;
   }
+
 
   //funcio que busca un àrea pel seu identificador
   @Override
@@ -28,6 +33,7 @@ public class Partition extends Area {
     return null;
   }
 
+  //Obté tots els espais continguts en aquesta partició i les seves sub-àrees.
   @Override
   public ArrayList<Space> getSpaces() {
     ArrayList<Space> spaces = new ArrayList<>();
@@ -47,7 +53,21 @@ public class Partition extends Area {
     return doors;
   }
 
+  public ArrayList<Area> getChilds() {
+    return childs;
+  }
+
+  //afegir una nova sub-àrea a la partició
+
   public void addChild(Area area) {
     childs.add(area);
+  }
+
+  @Override
+  public void accept(Visitor visitor) {
+    visitor.visit(this);
+    for (Area area : childs) {
+      area.accept(visitor); // Recursivamente visita las sub-áreas
+    }
   }
 }

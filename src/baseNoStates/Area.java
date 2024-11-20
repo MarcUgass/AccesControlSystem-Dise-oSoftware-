@@ -6,8 +6,8 @@ import org.json.JSONObject;
 
 public abstract class Area {
   private String id;
-  // llista de portes que té cada area,
-  // s'utilitza protected, ja que les subclases poden accedir-hi
+  // Llista de portes que té cada àrea.
+  // Es defineix com a protected perquè les subclasses puguin accedir-hi.
   protected ArrayList<Door> doors;
 
   // Constructor per defecte que inicialitza l'ID de l'àrea i crea una llista buida de portes.
@@ -38,10 +38,12 @@ public abstract class Area {
     return "Area(" + ", id=" + id + '\'' + ")";
   }
 
+  // Converteix l'àrea en un objecte JSON.
   public JSONObject toJson() {
     JSONObject json = new JSONObject();
     json.put("id", id);
     return json;
   }
-}
 
+  public abstract void accept(Visitor visitor);
+}

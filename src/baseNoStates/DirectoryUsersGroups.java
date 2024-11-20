@@ -6,6 +6,10 @@ import java.time.LocalTime;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.Arrays;
+/*
+ * Classe per gestionar els grups d'usuaris.
+ * Cada grup té un horari, accions permeses, zones accessibles i una llista d'usuaris.
+ */
 
 public class DirectoryUsersGroups {
   private static final ArrayList<UserGroup> userGroups = new ArrayList<>();
@@ -13,6 +17,7 @@ public class DirectoryUsersGroups {
   private static final Integer ONE = 1;
   private static final Integer YEAR = 2024;
 
+  //Crea els grups d'usuaris i els afegeix al directori.
   public static void makeUsersGroups() {
     // Employees
     LocalDate startDateEmployee = LocalDate.of(YEAR, Month.SEPTEMBER, ONE);

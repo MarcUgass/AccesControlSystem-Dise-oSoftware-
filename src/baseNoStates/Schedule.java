@@ -6,10 +6,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-/**
- *Schedule class that has times and days.
- *We need the class for the most time aspects.
- */
+// Classe que representa un horari amb dates, hores i dies de la setmana.
 
 public class Schedule {
   private LocalDate dateInici;

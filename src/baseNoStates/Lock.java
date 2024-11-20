@@ -1,5 +1,10 @@
 package baseNoStates;
 
+/*
+ * Classe que representa l'estat "bloquejat" d'una porta.
+ * En aquest estat, la porta no es pot obrir ni desbloquejar directament sense una acció específica.
+ */
+
 public class Lock extends DoorState {
 
   public Lock(Door door) {

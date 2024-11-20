@@ -5,6 +5,7 @@ import java.util.Observer;
 import java.util.Timer;
 import java.util.TimerTask;
 
+// Estat temporal en què la porta es desbloqueja per un període curt de temps.
 public class UnlockedShortly extends DoorState implements Observer {
 
   public UnlockedShortly(Door door) {
@@ -24,7 +25,7 @@ public class UnlockedShortly extends DoorState implements Observer {
   //   }, 10000);
   //  }
 
-
+  // Comprova l'estat actual de la porta i decideix el següent estat.
   private void checkDoorState() {
     if (door.isClosed()) {
       door.setState(new Lock(door));
@@ -34,6 +35,7 @@ public class UnlockedShortly extends DoorState implements Observer {
       System.out.println("Door " + door.getId() + " is still unlocked.");
     }
   }
+  // Comprova l'estat actual de la porta i decideix el següent estat.
 
   @Override
   public void open() {

@@ -1,5 +1,6 @@
 package baseNoStates;
 
+//Classe que representa l'estat "propped" d'una porta (porta oberta sostinguda)
 public class Propped extends DoorState {
   public Propped(Door door) {
     super(door, "propped");

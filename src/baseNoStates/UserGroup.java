@@ -1,6 +1,7 @@
 package baseNoStates;
 
 import java.util.ArrayList;
+// Classe que representa un grup d'usuaris amb horaris, accions i àrees associades.
 
 public class UserGroup {
   private final String id;

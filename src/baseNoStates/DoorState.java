@@ -4,6 +4,12 @@ public abstract class DoorState {
   protected Door door;
   protected String name;
 
+  /*
+   * Classe abstracta que defineix els estats d'una porta.
+   * Cada estat especifica el comportament de la porta per
+   * a accions com obrir, tancar, bloquejar, etc.
+   * Utilitza el patró de disseny State.
+   */
   public DoorState(Door door, String name) {
     this.door = door;
     this.name = name;

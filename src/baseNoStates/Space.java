@@ -12,19 +12,21 @@ public class Space extends Area {
     this.parent = parent;
   }
 
-  //Space no te sub-arees, torna una llista buida
+  // Retorna l'àrea si el seu identificador coincideix amb l'indicat, o null en cas contrari.
   @Override
   public Area findAreaById(String id) {
     if (this.getId().equals(id)) {
-      return this;  //si el id coincideix, retorna aquest espai
+      return this;
     }
-    return null; //si no coincideix, no busca mes perque no conté sub-arees
+    return null;
   }
+  // Obté una llista que conté aquest espai, ja que no hi ha sub-àrees
 
   @Override
   public ArrayList<Space> getSpaces() {
-    return new ArrayList<>(Arrays.asList(this)); //retorna una llista buida ja que no te sub-arees
+    return new ArrayList<>(Arrays.asList(this));
   }
+  // Obté la llista de portes associades a aquest espai.
 
   @Override
   public ArrayList<Door> getDoorsGivingAccess() {
@@ -35,4 +37,8 @@ public class Space extends Area {
     doors.add(door);
   }
 
+  @Override
+  public void accept(Visitor visitor) {
+    visitor.visit(this);
+  }
 }
