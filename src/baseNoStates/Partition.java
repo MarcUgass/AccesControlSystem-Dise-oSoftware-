@@ -20,6 +20,7 @@ public class Partition extends Area {
     this.partition = parent;
   }
 
+  /*
   //Function that searches for an area by its identifier
   @Override
   public Area findAreaById(String id) {
@@ -35,6 +36,8 @@ public class Partition extends Area {
     //if nothing is found, returns null
     return null;
   }
+  */
+
 
   //Gets all spaces contained in this partition and its sub-areas
   @Override
@@ -46,6 +49,7 @@ public class Partition extends Area {
     return spaces;
   }
 
+
   //Getter that looks at all zones for doors that give access to them
   @Override
   public ArrayList<baseNoStates.Door> getDoorsGivingAccess() {
@@ -55,7 +59,6 @@ public class Partition extends Area {
     }
     return doors;
   }
-
   public ArrayList<Area> getChilds() {
     return childs;
   }
@@ -67,7 +70,7 @@ public class Partition extends Area {
 
   @Override
   public void accept(Visitor visitor) {
-    visitor.visit(this);
+    visitor.visitPartition(this);
     for (Area area : childs) {
       area.accept(visitor); // Recursively visit sub-areas
     }

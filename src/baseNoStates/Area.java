@@ -20,7 +20,7 @@ public abstract class Area {
   }
 
   // Abstract method to find an area by its ID.
-  public abstract Area findAreaById(String id);
+  //public abstract Area findAreaById(String id);
 
   public String getId() {
     return id;

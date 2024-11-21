@@ -33,7 +33,7 @@ public class DirectoryUsersGroups {
     // Schedule: Sep 1 - Mar 1, Mon-Fri 9:00-17:00
     // Actions: Can only unlock shortly, open and close
     LocalDate startDateEmployee = LocalDate.of(YEAR, Month.SEPTEMBER, ONE);
-    LocalDate endDateEmployee = LocalDate.of(YEAR, Month.MARCH, ONE);
+    LocalDate endDateEmployee = LocalDate.of(2025, Month.MARCH, ONE);
 
     LocalTime startTimeEmployee = LocalTime.of(9, 0);
     LocalTime endTimeEmployee = LocalTime.of(17, 0);

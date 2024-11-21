@@ -6,6 +6,9 @@ import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Class that represents a schedule with dates, times and days of the week.
  */
@@ -15,6 +18,8 @@ public class Schedule {
   private LocalTime timeInici;
   private LocalTime timeFin;
   private ArrayList<DayOfWeek> days;
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(Schedule.class);
 
   /**
    * Constructor for the Schedule class
@@ -44,10 +49,12 @@ public class Schedule {
 
     boolean dateTrue = now.toLocalDate().isAfter(dateInici)
         && now.toLocalDate().isBefore(dateFin);
+    LOGGER.info("Data inici: " + dateInici + " Data final: " + dateFin);
 
     boolean timeTrue = now.toLocalTime().isAfter(timeInici)
         && now.toLocalTime().isBefore(timeFin);
 
+    LOGGER.info("Checking if the current date and time matches the schedule: " +  "Days: "+ daysTrue + "Date: " + dateTrue + "Time: " + timeTrue);
     return daysTrue && dateTrue && timeTrue;
   }
 

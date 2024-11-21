@@ -9,6 +9,9 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class RequestReader implements Request {
   private final String credential; // who
   private final String action;     // what
@@ -19,6 +22,8 @@ public class RequestReader implements Request {
   private final ArrayList<String> reasons; // why not authorized
   private String doorStateName;
   private boolean doorClosed;
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(RequestReader.class);
 
   public RequestReader(String credential, String action, LocalDateTime now, String doorId) {
     this.credential = credential;
@@ -93,6 +98,7 @@ public class RequestReader implements Request {
     if (user == null) {
       authorized = false;
       addReason("user doesn't exists");
+      LOGGER.warn("User doesn't exists");
     } else {
       //TODO: get the who, where, when and what in order to decide, and if not
       // authorized add the reason(s)
@@ -110,10 +116,12 @@ public class RequestReader implements Request {
 
       if (areas.size() == 1 && areas.get(0).getId().equals("building")) {
         areaTrue = true;
+        LOGGER.info("Area is building");
       } else {
         for (Area area : areas) {
           if (door.getFromSpace() == area || door.getToSpace() == area) {
             areaTrue = true;
+            LOGGER.info("Area is " + area.getId());
           }
         }
       }
@@ -122,6 +130,7 @@ public class RequestReader implements Request {
         authorized = true;
       } else {
         authorized = false;
+        LOGGER.warn("User is not authorized"+ " areaTrue: " + areaTrue + " isSchedule: " + isSchedule + " actionsTrue: " + actionsTrue);
       }
       //authorized = true;
     }

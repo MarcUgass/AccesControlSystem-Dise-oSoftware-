@@ -97,7 +97,13 @@ public class DirectoryAreas {
 
   // Searches for an area by its ID within the areas tree
   public static Area findAreaById(String id) {
-    return root.findAreaById(id);
+    if (id == "building") {
+      LOGGER.info("Area with id " + id + " found");
+      return root;
+    }
+    FindAreaByIdVisitor visitor = new FindAreaByIdVisitor(id);
+    root.accept(visitor);
+    return visitor.getFoundArea();
   }
 
   // Searches for a door by its ID within the doors list

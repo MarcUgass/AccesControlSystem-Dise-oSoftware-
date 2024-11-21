@@ -9,20 +9,34 @@ public class FindAreaByIdVisitor implements Visitor {
   }
 
   public Area getFoundArea() {
+    LOGGER.info("Return area with id: " + id);
     return foundArea;
   }
 
   @Override
-  public void visit(Space space) {
+  public void visitSpace(Space space) {
     if (space.getId().equals(id)) {
       foundArea = space;
     }
   }
 
   @Override
-  public void visit(Partition partition) {
+  public void visitPartition(Partition partition) {
+    /*
     if (partition.getId().equals(id)) {
       foundArea = partition;
+    }
+    */
+    if (partition.getId().equals(id)) {
+      foundArea = partition;
+      LOGGER.info("Found area with id: " + id);
+    } else {
+      for (Area area : partition.getSpaces()) {
+        area.accept(this);
+        if (foundArea != null) {
+          break;
+        }
+      }
     }
   }
 }

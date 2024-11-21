@@ -12,6 +12,7 @@ public class Space extends Area {
     this.parent = parent;
   }
 
+  /*
   // Returns the area if its identifier matches the given one, or null otherwise
   @Override
   public Area findAreaById(String id) {
@@ -21,13 +22,14 @@ public class Space extends Area {
     return null;
   }
   // Gets a list containing this space, since there are no sub-areas
-
+*/
   @Override
   public ArrayList<Space> getSpaces() {
     return new ArrayList<>(Arrays.asList(this));
   }
-  // Gets the list of doors associated with this space
 
+
+  // Gets the list of doors associated with this space
   @Override
   public ArrayList<baseNoStates.Door> getDoorsGivingAccess() {
     return doors; // returns the doors associated with this space
@@ -39,6 +41,6 @@ public class Space extends Area {
 
   @Override
   public void accept(Visitor visitor) {
-    visitor.visit(this);
+    visitor.visitSpace(this);
   }
 }

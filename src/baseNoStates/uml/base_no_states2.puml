@@ -1,0 +1,183 @@
+@startuml
+'https://plantuml.com/class-diagram
+skinparam classAttributeIconSize 0
+
+class Webserver {
+- {static} PORT :int
+- {static} FORMATTER : DateTimeFormatter
++ Webserver()
+}
+
+class SocketThread {
+- insocked : Socked
+- makeRequest(tokens : String[]) : Request
+- makeRequestReader(tokens : String[]) : RequestReader
+- makeRequestArea(tokens : String[]) : RequestArea
+- makeHeaderAnswer() : String
+- makeJsonAnswer(request : Request) : String
++ run()
+}
+
+Webserver +-right- SocketThread
+
+note right of SocketThread
+inner class
+of Webserver
+end note
+
+    class Area {
+        <<abstract>>
+        -String id
+        #ArrayList<Door> doors
+        +Area(String id)
+        +String getId()
+        +abstract ArrayList<Space> getSpaces()
+        +abstract ArrayList<Door> getDoorsGivingAccess()
+        +void setDoors(ArrayList<Door>)
+        +JSONObject toJson()
+        +abstract void accept(Visitor)
+    }
+
+    class Space {
+        -Partition parent
+        -ArrayList<Door> doors
+        +Space(String id, Partition parent)
+        +ArrayList<Space> getSpaces()
+        +ArrayList<Door> getDoorsGivingAccess()
+        +void addDoor(Door)
+        +void accept(Visitor)
+    }
+
+    class Partition {
+        -ArrayList<Area> childs
+        -Partition partition
+        +Partition(String id, Partition parent)
+        +ArrayList<Space> getSpaces()
+        +ArrayList<Door> getDoorsGivingAccess()
+        +ArrayList<Area> getChilds()
+        +void addChild(Area)
+        +void accept(Visitor)
+    }
+
+    class Door {
+        -String id
+        -boolean closed
+        -DoorState state
+        -Space fromSpace
+        -Space toSpace
+        +Door(String id, Space from, Space to)
+        +void processRequest(RequestReader)
+        +void setState(DoorState)
+        +String getStateName()
+        +JSONObject toJson()
+    }
+
+    class DoorState {
+        <<abstract>>
+        #Door door
+        #String name
+        +DoorState(Door door, String name)
+        +abstract void open()
+        +abstract void close()
+        +abstract void lock()
+        +abstract void unlock()
+        +abstract void unlock_shortly()
+    }
+
+    class Lock {
+        +Lock(Door door)
+        +void open()
+        +void close()
+        +void lock()
+        +void unlock()
+        +void unlock_shortly()
+    }
+
+    class Unlocked {
+        +Unlocked(Door door)
+        +void open()
+        +void close()
+        +void lock()
+        +void unlock()
+        +void unlock_shortly()
+    }
+
+    class UnlockedShortly {
+        +UnlockedShortly(Door door)
+        +void open()
+        +void close()
+        +void lock()
+        +void unlock()
+        +void unlock_shortly()
+        +void update(Observable, Object)
+    }
+
+    class Propped {
+        +Propped(Door door)
+        +void open()
+        +void close()
+        +void lock()
+        +void unlock()
+        +void unlock_shortly()
+    }
+
+    interface Visitor {
+        +void visitSpace(Space)
+        +void visitPartition(Partition)
+    }
+
+    class FindAreaById implements Visitor {
+        -String id
+        -Area area
+        +FindAreaById(String id)
+        +Area getArea()
+        +void visitSpace(Space)
+        +void visitPartition(Partition)
+    }
+
+    class DirectoryAreas {
+        -{static} Area[] allAreas
+        -{static} Door[] allDoors
+        -Area root
+        +{static} void makeAreas()
+        +{static} Area findAreaById(String id)
+        +{static} Door[] getAllDoors()
+        +{static} void accept(Visitor visitor)
+    }
+
+    class DirectoryUserGroup {
+        -{static} UserGroup[] allGroups
+        +{static} void makeGroups()
+        +{static} UserGroup findGroupById(String id)
+        +{static} UserGroup[] getAllGroups()
+        +{static} void addUserToGroup(String userId, String groupId)
+        +{static} void removeUserFromGroup(String userId, String groupId)
+    }
+
+    class UserGroup {
+        -String id
+        -ArrayList<String> userIds
+        +UserGroup(String id)
+        +String getId()
+        +void addUser(String userId)
+        +void removeUser(String userId)
+        +boolean hasUser(String userId)
+        +JSONObject toJson()
+    }
+
+    Area <|-- Space
+    Area <|-- Partition
+    DoorState <|-- Lock
+    DoorState <|-- Unlocked 
+    DoorState <|-- UnlockedShortly
+    DoorState <|-- Propped
+    Door "1" *-- "1" DoorState
+    Space "1" *-- "*" Door
+    Partition "1" *-- "*" Area
+    UnlockedShortly ..|> Observer
+    Door -- Space
+    DirectoryAreas --> "*" Area : "allAreas"
+    DirectoryAreas --> "*" Door : "allDoors"
+    DirectoryUserGroup --> "*" UserGroup : "allGroups"
+
+@enduml
