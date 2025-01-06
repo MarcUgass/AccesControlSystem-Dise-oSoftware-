@@ -36,8 +36,14 @@ class _ScreenPartitionState extends State<ScreenPartition> {
               foregroundColor: Theme.of(context).colorScheme.onPrimary,
               title: Text(snapshot.data!.root.id),
               actions: <Widget>[
-                IconButton(icon: const Icon(Icons.home), onPressed: () {}
-                  // TODO go home page = root
+                IconButton(
+                  icon: const Icon(Icons.home),
+                  onPressed: () {
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(builder: (context) => const ScreenPartition(id: "building")),
+                          (Route<dynamic> route) => false, // Elimina todas las rutas anteriores
+                    );
+                  },
                 ),
                 //TODO other actions
               ],
