@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutterapp/tree.dart';
 import 'package:flutterapp/requests.dart';
+import 'package:flutterapp/screen_partition.dart';
 
 class ScreenSpace extends StatefulWidget {
   final String id;
@@ -42,8 +43,14 @@ class _ScreenSpaceState extends State<ScreenSpace> {
               foregroundColor: Theme.of(context).colorScheme.onPrimary,
               title: Text(snapshot.data!.root.id),
               actions: <Widget>[
-                IconButton(icon: const Icon(Icons.home), onPressed: () {}
-                  // TODO go home page = root
+                IconButton(
+                  icon: const Icon(Icons.home),
+                  onPressed: () {
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(builder: (context) => const ScreenPartition(id: "building")),
+                          (Route<dynamic> route) => false, // Elimina todas las rutas anteriores
+                    );
+                  },
                 ),
                 //TODO other actions
               ],
