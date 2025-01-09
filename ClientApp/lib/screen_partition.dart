@@ -4,7 +4,7 @@ import 'package:flutterapp/screen_space.dart';
 import 'package:flutterapp/requests.dart';
 
 class ScreenPartition extends StatefulWidget {
-  // The unique identifier for the screen partition
+  
   final String id;
 
   const ScreenPartition({super.key, required this.id});
