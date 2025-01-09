@@ -5,7 +5,7 @@ import 'package:flutterapp/screen_partition.dart';
 
 
 class ScreenSpace extends StatefulWidget {
-  // This widget represents a screen space with a unique ID
+  
   final String id;
   const ScreenSpace({super.key, required this.id});
 
