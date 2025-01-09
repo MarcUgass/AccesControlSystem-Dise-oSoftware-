@@ -1,67 +1,75 @@
-abstract class Area{
+abstract class Area {
   late String id;
   late List<dynamic> children;
-  bool locked = false;
+  bool locked = false; // Estado por defecto de bloqueo
 
-  // Constructor to initialize the Area with an id and its children
-  Area(this.id, this.children);
+  Area(this.id, this.children); // Constructor que inicializa el ID y los hijos
 }
 
 class Partition extends Area {
-  // Constructor for Partition, which is a type of Area
-  Partition(String id, List<Area> children) : super(id, children);
+  Partition(String id, List<Area> children) : super(id, children); // Constructor de Partition
 }
 
 class Space extends Area {
-  // Constructor for Space, which is also a type of Area but has Doors as children
-  Space(String id, List<Door> children) : super(id, children);
+  Space(String id, List<Door> children) : super(id, children); // Constructor de Space
 }
 
 class Door {
   late String id;
   late bool closed;
-  late String state;
+  late String state; // Estado (locked/unlocked)
 
-  // Constructor to initialize the Door with its properties
-  Door({required this.id, this.state = "unlocked", this.closed = true});
+  Door({required this.id, this.state = "unlocked", this.closed = true}); // Constructor de Door
 }
 
-// This class represents a tree structure of Areas and Doors
+// La clase Tree representa el árbol de áreas, que puede contener particiones y espacios
 class Tree {
   late Area root;
 
-  // Constructor that takes a Map representing the tree structure
   Tree(Map<String, dynamic> dec) {
-    // Determine the type of root based on the 'class' field in the input map
+    // Inicialización de la raíz según el tipo de clase que se define en dec
     if (dec['class'] == "partition") {
-      List<Area> children = <Area>[]; // List to hold child Areas
-      // Iterate through the areas defined in the input map
+      List<Area> children = <Area>[];
       for (Map<String, dynamic> area in dec['areas']) {
-        // If the area is a Partition, add it to the children list
         if (area['class'] == "partition") {
-          children.add(Partition(area['id'], <Area>[]));
-        // If the area is a Space, add it to the children list
+          children.add(Partition(area['id'], <Area>[])); // Si es partición, añadir como partición
         } else if (area['class'] == "space") {
-          children.add(Space(area['id'], <Door>[]));
+          children.add(Space(area['id'], <Door>[])); // Si es espacio, añadir como espacio
         } else {
-          // If the area type is unknown, trigger an assertion error
-          assert(false);
+          assert(false); // Error si el tipo no es reconocido
         }
       }
-      // Set the root to a new Partition with the collected children
-      root = Partition(dec['id'], children);
+      root = Partition(dec['id'], children); // Establecer la raíz como partición
     } else if (dec['class'] == "space") {
-      List<Door> children = <Door>[]; // List to hold child Doors
-      // Iterate through the access doors defined in the input map
+      List<Door> children = <Door>[];
       for (Map<String, dynamic> d in dec['access_doors']) {
-        // Add each door to the children list
-        children.add(Door(id: d['id'], state: d['state'], closed: d['closed']));
+        children.add(Door(id: d['id'], state: d['state'], closed: d['closed'])); // Añadir puertas al espacio
       }
-      // Set the root to a new Space with the collected doors
-      root = Space(dec['id'], children);
+      root = Space(dec['id'], children); // Establecer la raíz como espacio
     } else {
-      // If the root type is unknown, trigger an assertion error
-      assert(false);
+      assert(false); // Error si el tipo no es reconocido
     }
+  }
+
+  // Función para contar las habitaciones (particiones) y las puertas
+  Map<String, int> countRoomsAndDoors() {
+    int roomCount = 0;
+    int doorCount = 0;
+
+    // Función recursiva para contar en las particiones y espacios
+    void count(Area area) {
+      if (area is Partition) {
+        roomCount++; // Contamos particiones
+        for (var child in area.children) {
+          count(child); // Llamada recursiva para contar dentro de particiones anidadas
+        }
+      } else if (area is Space) {
+        roomCount++; // Contamos espacios
+        doorCount += area.children.length; // Contamos puertas en cada espacio
+      }
+    }
+
+    count(root); // Comienza el conteo desde la raíz
+    return {'rooms': roomCount, 'doors': doorCount}; // Devuelve el conteo de habitaciones y puertas
   }
 }
