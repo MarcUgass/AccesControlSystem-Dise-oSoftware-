@@ -4,6 +4,7 @@ import 'package:flutterapp/screen_space.dart';
 import 'package:flutterapp/requests.dart';
 
 class ScreenPartition extends StatefulWidget {
+  // The unique identifier for the screen partition
   final String id;
 
   const ScreenPartition({super.key, required this.id});
@@ -13,11 +14,13 @@ class ScreenPartition extends StatefulWidget {
 }
 
 class _ScreenPartitionState extends State<ScreenPartition> {
+  // Future variable to hold the tree data
   late Future<Tree> futureTree;
 
   @override
   void initState() {
     super.initState();
+    // Initialize the futureTree with the tree data based on the provided id
     futureTree = getTree(widget.id);
   }
 
@@ -28,10 +31,11 @@ class _ScreenPartitionState extends State<ScreenPartition> {
     return FutureBuilder<Tree>(
       future: futureTree,
       builder: (context, snapshot) {
-        // anonymous function
+        // Check if the future has completed successfully
         if (snapshot.hasData) {
           return Scaffold(
             appBar: AppBar(
+              // Set the app bar color and title based on the tree data
               backgroundColor: Theme.of(context).colorScheme.primary,
               foregroundColor: Theme.of(context).colorScheme.onPrimary,
               title: Text(snapshot.data!.root.id),
@@ -39,9 +43,10 @@ class _ScreenPartitionState extends State<ScreenPartition> {
                 IconButton(
                   icon: const Icon(Icons.home),
                   onPressed: () {
+                    // Navigate back to the main screen
                     Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(builder: (context) => const ScreenPartition(id: "building")),
-                          (Route<dynamic> route) => false, // Elimina todas las rutas anteriores
+                      (Route<dynamic> route) => false, // Remove all previous routes
                     );
                   },
                 ),
@@ -49,7 +54,7 @@ class _ScreenPartitionState extends State<ScreenPartition> {
               ],
             ),
             body: ListView.separated(
-              // it's like ListView.builder() but better because it includes a separator between items
+              // ListView with separators between items
               padding: const EdgeInsets.all(16.0),
               itemCount: snapshot.data!.root.children.length,
               itemBuilder: (BuildContext context, int i) =>
@@ -59,9 +64,10 @@ class _ScreenPartitionState extends State<ScreenPartition> {
             ),
           );
         } else if (snapshot.hasError) {
+          // Display error message if the future fails
           return Text("${snapshot.error}");
         }
-        // By default, show a progress indicator
+        // By default, show a progress indicator while loading
         return Container(
             height: MediaQuery.of(context).size.height,
             color: Colors.white,
@@ -78,12 +84,13 @@ class _ScreenPartitionState extends State<ScreenPartition> {
       children: [
         Expanded(
           child: ListTile(
+            // Display the title based on the type of area (Partition or Space)
             title: Text(
               area is Partition ? 'Partition ${area.id}' : 'Space ${area.id}',
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             onTap: () {
-              // Navegar hacia abajo
+              // Navigate to the selected area
               if (area is Partition) {
                 _navigateDownPartition(area.id);
               } else {
@@ -93,19 +100,21 @@ class _ScreenPartitionState extends State<ScreenPartition> {
           ),
         ),
         ElevatedButton.icon(
+          // Button to lock or unlock the area
           icon: Icon(area.locked ? Icons.lock : Icons.lock_open),
           label: Text(area.locked ? "Unlock" : "Lock"),
           style: ElevatedButton.styleFrom(
             backgroundColor: area.locked ? Colors.orange : Colors.blue,
           ),
           onPressed: () async {
+            // Toggle the lock state of the area
             if (area.locked) {
-              await unlockArea(area);
+              await unlockArea(area); // Unlock the area if it is currently locked
             } else {
-              await lockArea(area);
+              await lockArea(area); // Lock the area if it is currently unlocked
             }
             setState(() {
-              area.locked = !area.locked; // Actualizar estado localmente
+              area.locked = !area.locked; // Update local state to reflect the new lock status
             });
           },
         ),
@@ -113,18 +122,18 @@ class _ScreenPartitionState extends State<ScreenPartition> {
     );
   }
 
-
   void _navigateDownPartition(String childId) {
+    // Navigate to the child partition screen
     Navigator.of(context)
         .push(MaterialPageRoute<void>(builder: (context) => ScreenPartition(id: childId,))
     );
   }
 
   void _navigateDownSpace(String childId) {
+    // Navigate to the child space screen
     Navigator.of(context)
         .push(MaterialPageRoute<void>(builder: (context) => ScreenSpace(id: childId,))
     );
   }
-
 
 }
